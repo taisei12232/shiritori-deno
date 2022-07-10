@@ -1,1 +1,2 @@
-dist
+# packup build コマンドを deno deploy で実行できないので、 dist を .gitignore から除外
+# dist
