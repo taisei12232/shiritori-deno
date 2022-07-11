@@ -12,22 +12,22 @@ function App() {
   }, []);
   const [sendText, setSendText] = useState<string>("");
   const [prevWord, setPrevWord] = useState<string>("");
-  // const reqData = async () => {
-  //   const response = await fetch("/shiritori", {
-  //     method: "POST",
+  const reqData = async () => {
+    const response = await fetch("/shiritori", {
+      method: "POST",
 
-  //     headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" },
 
-  //     body: JSON.stringify(sendText),
-  //   });
-  //   if (response.status / 100 !== 2) {
-  //     alert(await response.text());
-  //     return;
-  //   }
+      body: JSON.stringify(sendText),
+    });
+    if (response.status / 100 !== 2) {
+      alert(await response.text());
+      return;
+    }
 
-  //   const previousWord = await response.text();
-  //   setPrevWord(previousWord);
-  // };
+    const previousWord = await response.text();
+    setPrevWord(previousWord);
+  };
   return (
     <div>
       <h1>しりとり</h1>
@@ -38,7 +38,7 @@ function App() {
       ></input>
       <button
         onClick={() => {
-          // reqData();
+          reqData();
         }}
       >
         送信
