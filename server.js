@@ -2,15 +2,18 @@ import { serve } from "https://deno.land/std@0.138.0/http/server.ts";
 
 import { serveDir } from "https://deno.land/std@0.138.0/http/file_server.ts";
 import { pokemon } from "./pokemon.tsx";
-let previousWord = pokemon[0].name;
+let previousWord = "しりとり";
 
 console.log("Listening on http://localhost:8000");
 
 serve(async (req) => {
   const pathname = new URL(req.url).pathname;
-
+  console.log(req);
   if (req.method === "GET" && pathname === "/shiritori") {
     return new Response(previousWord);
+  }
+  if (req.method === "GET" && pathname === "/firstData") {
+    return pokemon[Math.floor(Math.random() * 801)].name;
   }
 
   if (req.method === "POST" && pathname === "/shiritori") {
