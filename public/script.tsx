@@ -27,27 +27,30 @@ function App() {
 
     setFirstWordData(JSON.stringify(firstWord));
   };
-  const hoge = (word: string) => {
-    console.log("hoge");
+  // const hoge = (word: string) => {
+  //   console.log(sendText);
 
-    if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
-      console.log("yahharo-");
-    }
-  };
+  //   console.log("hoge");
+
+  //   if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
+  //     console.log("yahharo-");
+  //   } else {
+  //     console.log("no");
+  //   }
+  // };
   const wordCheck = (word: string) => {
     if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
-      reqData();
+      console.log("yahharo1");
+      reqData(word);
     } else {
       alert("入力はひらがなかカタカナです");
     }
   };
-  const reqData = async () => {
+  const reqData = async (word: string) => {
     // sendtext にひらがな以外の文字が含まれる場合　＝＞　アラートを表示してbreak
-    const response = await fetch("/shiritori", {
-      method: "POST",
+    console.log("yaharro2");
 
-      headers: { "Content-Type": "application/json" },
-
+    const response = await fetch("http://localhost:8000/word", {
       body: JSON.stringify(sendText),
     });
     if (response.status / 100 !== 2) {
@@ -57,12 +60,14 @@ function App() {
 
     const previousWord = await response.text();
     setPrevWord(previousWord);
+    console.log(previousWord + "yahharo");
+    console.log("yahharo");
   };
   return (
     <div>
       <button
         onClick={() => {
-          hoge();
+          // hoge();
         }}
       >
         最初の文字決めるボタン的な
@@ -75,7 +80,7 @@ function App() {
       ></input>
       <button
         onClick={() => {
-          reqData();
+          wordCheck(sendText);
         }}
       >
         送信

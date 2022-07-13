@@ -27,21 +27,26 @@ serve(async (req) => {
     });
   }
 
-  if (req.method === "POST" && pathname === "/shiritori") {
-    const requestJson = await req.json();
+  if (req.method === "GET" && pathname === "/word") {
+    // const requestJson = await req.json();
 
-    const nextWord = requestJson.nextWord;
+    // const nextWord = requestJson.nextWord;
 
-    if (
-      nextWord.length > 0 &&
-      previousWord.charAt(previousWord.length - 1) !== nextWord.charAt(0)
-    ) {
-      return new Response("前の単語に続いていません。", { status: 400 });
-    }
+    // if (
+    //   nextWord.length > 0 &&
+    //   previousWord.charAt(previousWord.length - 1) !== nextWord.charAt(0)
+    // ) {
+    //   return new Response("前の単語に続いていません。", { status: 400 });
+    // }
 
-    previousWord = nextWord;
+    // previousWord = nextWord;
 
-    return new Response(previousWord);
+    return new Response(JSON.stringify(previousWord), {
+      headers: {
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "localhost:1234",
+      },
+    });
   }
   console.log("out serverDir");
   return serveDir(req, {
