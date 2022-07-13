@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.138.0/http/server.ts";
-
 import { serveDir } from "https://deno.land/std@0.138.0/http/file_server.ts";
 import { pokemon } from "./pokemon.tsx";
 let previousWord = "しりとり";
@@ -10,10 +9,22 @@ serve(async (req) => {
   const pathname = new URL(req.url).pathname;
   console.log(req);
   if (req.method === "GET" && pathname === "/shiritori") {
-    return new Response(previousWord);
+    console.log("in shiritori");
+    return new Response(JSON.stringify(previousWord), {
+      headers: {
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:1234",
+      },
+    });
   }
   if (req.method === "GET" && pathname === "/firstData") {
-    return pokemon[Math.floor(Math.random() * 801)].name;
+    console.log("in firstData");
+    return new Response(JSON.stringify(pokemon[0].name), {
+      headers: {
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:1234",
+      },
+    });
   }
 
   if (req.method === "POST" && pathname === "/shiritori") {
@@ -32,7 +43,7 @@ serve(async (req) => {
 
     return new Response(previousWord);
   }
-
+  console.log("out serverDir");
   return serveDir(req, {
     fsRoot: "dist",
 

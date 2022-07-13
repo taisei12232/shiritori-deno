@@ -6,18 +6,21 @@ function App() {
   const [sendText, setSendText] = useState<string>("");
   const [prevWord, setPrevWord] = useState<string>("");
   const [firstWordData, setFirstWordData] = useState<string>("");
+
   useStateEffect(() => {
     const dataReq = async () => {
-      const response = await fetch("/shiritori");
-      const previousWord = await response.text();
-      setPrevWord("前の単語:" + previousWord);
+      const response = await fetch("http://localhost:8000/shiritori");
+      const previousWord = await response.json();
+      setPrevWord(previousWord);
       console.log(prevWord);
     };
     dataReq();
   }, []);
   const firstReqData = async () => {
-    const data = await fetch("/firstData");
+    console.log("in firstReqData");
+    const data = await fetch("http://localhost:8000/firstData");
     const firstWord = await data.json();
+
     setFirstWordData(JSON.stringify(firstWord));
   };
   const reqData = async () => {
@@ -34,7 +37,7 @@ function App() {
     }
 
     const previousWord = await response.text();
-    setPrevWord("前の単語:" + previousWord);
+    setPrevWord(previousWord);
   };
   return (
     <div>
@@ -46,7 +49,7 @@ function App() {
         最初の文字決めるボタン的な
       </button>
       <p>最初の単語:{firstWordData}</p>
-      <p>{prevWord}</p>
+      <p>前の単語:{prevWord}</p>
       <input
         value={sendText}
         onChange={(event) => setSendText(event.target.value)}
