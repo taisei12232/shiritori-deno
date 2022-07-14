@@ -5,6 +5,7 @@ type keepWord = {
   Word: string;
   isUser: boolean;
 };
+
 function App() {
   const [sendText, setSendText] = useState<string>("");
   const [prevWord, setPrevWord] = useState<string>("");
@@ -35,7 +36,7 @@ function App() {
 
   const wordCheck = (word: string) => {
     if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
-      console.log("yahharo1");
+      console.log("f-yahharo1");
       reqData(word);
     } else {
       alert("入力はひらがなかカタカナです");
@@ -43,11 +44,11 @@ function App() {
   };
   const reqData = async (word: string) => {
     // sendtext にひらがな以外の文字が含まれる場合　＝＞　アラートを表示してbreak
-    console.log("yaharro2");
+    console.log("f-yahharo2");
     const response = await fetch("http://localhost:8000/word", {
-      method: "GET",
+      method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(sendText),
+      body: JSON.stringify({ sendText }),
     });
     if (response.status / 100 !== 2) {
       alert(await response.text());
@@ -56,8 +57,8 @@ function App() {
 
     const previousWord = await response.text();
     setPrevWord(previousWord);
-    console.log(previousWord + "yahharo");
-    console.log("yahharo");
+    console.log(previousWord + "f-yahharo");
+    console.log("f-yahharo");
   };
   return (
     <div>

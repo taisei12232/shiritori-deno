@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.138.0/http/server.ts";
 import { serveDir } from "https://deno.land/std@0.138.0/http/file_server.ts";
 import { pokemon } from "./pokemon.tsx";
 let previousWord = "しりとり";
+let yahharo = "やっはろ";
 
 console.log("Listening on http://localhost:8000");
 const keepWord = {
@@ -20,6 +21,16 @@ function searchWord(word) {
 serve(async (req) => {
   const pathname = new URL(req.url).pathname;
   console.log(req);
+  if (req.method === "OPTIONS") {
+    return new Response("", {
+      headers: {
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:1234",
+        "Access-Control-Allow-Method": "GET,PUT,POST,DELETE",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
   if (req.method === "GET" && pathname === "/shiritori") {
     console.log("in shiritori");
     return new Response(JSON.stringify(previousWord), {
@@ -39,7 +50,7 @@ serve(async (req) => {
     });
   }
 
-  if (req.method === "GET" && pathname === "/word") {
+  if (req.method === "POST" && pathname === "/word") {
     // const requestJson = await req.json();
 
     // const nextWord = requestJson.nextWord;
@@ -52,8 +63,8 @@ serve(async (req) => {
     // }
 
     // previousWord = nextWord;
-
-    return new Response(JSON.stringify(previousWord), {
+    console.log("hello くぼたろう");
+    return new Response(JSON.stringify(yahharo), {
       headers: {
         "content-type": "application/json",
         "Access-Control-Allow-Origin": "http://localhost:1234",
