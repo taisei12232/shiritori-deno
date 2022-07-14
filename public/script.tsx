@@ -2,7 +2,7 @@ import React, { useState } from "https://cdn.skypack.dev/react@17.0.2?dts";
 import ReactDOM from "https://cdn.skypack.dev/react-dom@17.0.2?dts";
 import useStateEffect from "https://cdn.skypack.dev/use-state-effect";
 type keepWord = {
-  word: string;
+  Word: string;
   isUser: boolean;
 };
 function App() {
@@ -27,17 +27,12 @@ function App() {
 
     setFirstWordData(JSON.stringify(firstWord));
   };
-  // const hoge = (word: string) => {
-  //   console.log(sendText);
+  const gameEndCheck = (checkText: string) => {
+    if (checkText[checkText.length - 1] === "ン") {
+      console.log("yahharo");
+    }
+  };
 
-  //   console.log("hoge");
-
-  //   if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
-  //     console.log("yahharo-");
-  //   } else {
-  //     console.log("no");
-  //   }
-  // };
   const wordCheck = (word: string) => {
     if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
       console.log("yahharo1");
@@ -49,8 +44,9 @@ function App() {
   const reqData = async (word: string) => {
     // sendtext にひらがな以外の文字が含まれる場合　＝＞　アラートを表示してbreak
     console.log("yaharro2");
-
     const response = await fetch("http://localhost:8000/word", {
+      method: "GET",
+      headers: { "content-type": "application/json" },
       body: JSON.stringify(sendText),
     });
     if (response.status / 100 !== 2) {
@@ -67,7 +63,7 @@ function App() {
     <div>
       <button
         onClick={() => {
-          // hoge();
+          firstReqData();
         }}
       >
         最初の文字決めるボタン的な
@@ -81,6 +77,7 @@ function App() {
       <button
         onClick={() => {
           wordCheck(sendText);
+          // wordList.push({sendText}, true);
         }}
       >
         送信

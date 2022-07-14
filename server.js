@@ -4,7 +4,19 @@ import { pokemon } from "./pokemon.tsx";
 let previousWord = "しりとり";
 
 console.log("Listening on http://localhost:8000");
-
+const keepWord = {
+  name: String,
+  isUsers: Boolean,
+};
+function searchWord(word) {
+  const tailChar = word[word.length - 1];
+  const searchedWord = pokemon.filter((item) => item.name[0] === tailChar);
+  if (searchedWord === null) {
+    return false;
+  } else {
+    return searchedWord[Math.random * searchedWord.length];
+  }
+}
 serve(async (req) => {
   const pathname = new URL(req.url).pathname;
   console.log(req);
@@ -44,7 +56,7 @@ serve(async (req) => {
     return new Response(JSON.stringify(previousWord), {
       headers: {
         "content-type": "application/json",
-        "Access-Control-Allow-Origin": "localhost:1234",
+        "Access-Control-Allow-Origin": "http://localhost:1234",
       },
     });
   }
