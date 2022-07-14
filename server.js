@@ -63,6 +63,7 @@ serve(async (req) => {
     // }
 
     // previousWord = nextWord;
+    console.log(req.body);
     console.log("hello くぼたろう");
     return new Response(JSON.stringify(yahharo), {
       headers: {

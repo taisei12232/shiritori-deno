@@ -10,7 +10,7 @@ function App() {
   const [sendText, setSendText] = useState<string>("");
   const [prevWord, setPrevWord] = useState<string>("");
   const [firstWordData, setFirstWordData] = useState<string>("");
-  const wordList: keepWord[] = [];
+  const [wordList, setWordList] = useState<keepWord[]>([]);
 
   useStateEffect(() => {
     const dataReq = async () => {
@@ -78,7 +78,7 @@ function App() {
       <button
         onClick={() => {
           wordCheck(sendText);
-          // wordList.push({sendText}, true);
+          setWordList((prev) => [...prev, { Word: sendText, isUser: true }]);
         }}
       >
         送信
