@@ -71,7 +71,9 @@ serve(async (req) => {
     );
     // previousWord = nextWord;
     return new Response(
-      JSON.stringify(reqData.sendText[reqData.sendText.length - 1]),
+      JSON.stringify(
+        getAvalablePokemons(reqData.sendText[reqData.sendText.length - 1])
+      ),
       {
         headers: {
           "content-type": "application/json",

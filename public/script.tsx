@@ -36,18 +36,13 @@ function App() {
     if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
       reqData(word);
     } else {
-      alert("入力はひらがなかカタカナです");
+      alert("入力はカタカナです");
     }
   };
-  const hiratoKana = (text: string) => {
-    if (text.match(/[[\u3040-\u309f]]/)) {
-      return text.replace(/[\u3041-\u3096]/g, function (match) {
-        const chr = match.charCodeAt(0) + 0x60;
-        return String.fromCharCode(chr);
-      });
-    } else {
-      return text;
-    }
+  const hiraToKana = (str: string): string => {
+    return str.replace(/[\u3041-\u3096]/g, (ch) =>
+      String.fromCharCode(ch.charCodeAt(0) + 0x60)
+    );
   };
   const reqData = async (word: string) => {
     const response = await fetch("http://localhost:8000/word", {
@@ -79,7 +74,7 @@ function App() {
       <p>前の単語:{prevWord}</p>
       <input
         value={sendText}
-        onChange={(event) => setSendText(hiratoKana(event.target.value))}
+        onChange={(event) => setSendText(hiraToKana(event.target.value))}
       ></input>
       <button
         onClick={() => {
