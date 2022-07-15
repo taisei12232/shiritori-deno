@@ -17,12 +17,10 @@ function App() {
       const response = await fetch("http://localhost:8000/shiritori");
       const previousWord = await response.json();
       setPrevWord(previousWord);
-      console.log(prevWord);
     };
     dataReq();
   }, []);
   const firstReqData = async () => {
-    console.log("in firstReqData");
     const data = await fetch("http://localhost:8000/firstData");
     const firstWord = await data.json();
 
@@ -36,15 +34,22 @@ function App() {
 
   const wordCheck = (word: string) => {
     if (word.match(/[\u30a0-\u30ff\u3040-\u309f]/)) {
-      console.log("f-yahharo1");
       reqData(word);
     } else {
       alert("入力はひらがなかカタカナです");
     }
   };
+  const hiratoKana = (text: string) => {
+    if (text.match(/[[\u3040-\u309f]]/)) {
+      return text.replace(/[\u3041-\u3096]/g, function (match) {
+        const chr = match.charCodeAt(0) + 0x60;
+        return String.fromCharCode(chr);
+      });
+    } else {
+      return text;
+    }
+  };
   const reqData = async (word: string) => {
-    // sendtext にひらがな以外の文字が含まれる場合　＝＞　アラートを表示してbreak
-    console.log("f-yahharo2");
     const response = await fetch("http://localhost:8000/word", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -56,8 +61,9 @@ function App() {
     }
 
     const previousWord = await response.text();
-    setPrevWord(previousWord);
-    console.log(previousWord + "f-yahharo");
+    console.log(previousWord);
+    console.log(JSON.parse(previousWord));
+    console.log(previousWord + "f-yahharo1");
     console.log("f-yahharo");
   };
   return (
@@ -73,7 +79,7 @@ function App() {
       <p>前の単語:{prevWord}</p>
       <input
         value={sendText}
-        onChange={(event) => setSendText(event.target.value)}
+        onChange={(event) => setSendText(hiratoKana(event.target.value))}
       ></input>
       <button
         onClick={() => {

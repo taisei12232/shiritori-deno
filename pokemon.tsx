@@ -3,4 +3,4 @@ type Pokemon = {
   name: string;
 };
 
-export const pokemon = pokemonJson as Pokemon[];
+export const pokemons = pokemonJson as Pokemon[];

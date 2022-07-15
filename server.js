@@ -1,22 +1,19 @@
 import { serve } from "https://deno.land/std@0.138.0/http/server.ts";
 import { serveDir } from "https://deno.land/std@0.138.0/http/file_server.ts";
-import { pokemon } from "./pokemon.tsx";
+import { pokemons } from "./pokemon.tsx";
 let previousWord = "しりとり";
 let yahharo = "やっはろ";
-
+const ngChars = ["ン", "X", "Y"];
 console.log("Listening on http://localhost:8000");
-const keepWord = {
-  name: String,
-  isUsers: Boolean,
-};
-function searchWord(word) {
-  const tailChar = word[word.length - 1];
-  const searchedWord = pokemon.filter((item) => item.name[0] === tailChar);
-  if (searchedWord === null) {
-    return false;
-  } else {
-    return searchedWord[Math.random * searchedWord.length];
-  }
+function getAvalablePokemons(tailChar) {
+  const avalablePokemons = pokemons
+    .filter((pokemon) => pokemon.name[0] === tailChar)
+    .filter((pokemon) =>
+      ngChars.every(
+        (ngChar) => ngChar !== pokemon.name[pokemon.name.length - 1]
+      )
+    );
+  return avalablePokemons;
 }
 serve(async (req) => {
   const pathname = new URL(req.url).pathname;
@@ -42,7 +39,7 @@ serve(async (req) => {
   }
   if (req.method === "GET" && pathname === "/firstData") {
     console.log("in firstData");
-    return new Response(JSON.stringify(pokemon[0].name), {
+    return new Response(JSON.stringify(pokemons[0].name), {
       headers: {
         "content-type": "application/json",
         "Access-Control-Allow-Origin": "http://localhost:1234",
@@ -61,16 +58,27 @@ serve(async (req) => {
     // ) {
     //   return new Response("前の単語に続いていません。", { status: 400 });
     // }
-
+    // console.log(req);
+    // console.log(req.body.getReader().read());
+    // console.log("yahharo");
+    // req.body.getReader().then(function A(value) {
+    //   console.log(value);
+    // });
+    const reqData = await req.json();
+    console.log("yahharo-");
+    console.log(
+      getAvalablePokemons(reqData.sendText[reqData.sendText.length - 1])
+    );
     // previousWord = nextWord;
-    console.log(req.body);
-    console.log("hello くぼたろう");
-    return new Response(JSON.stringify(yahharo), {
-      headers: {
-        "content-type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:1234",
-      },
-    });
+    return new Response(
+      JSON.stringify(reqData.sendText[reqData.sendText.length - 1]),
+      {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "http://localhost:1234",
+        },
+      }
+    );
   }
   console.log("out serverDir");
   return serveDir(req, {
